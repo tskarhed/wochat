@@ -11,28 +11,56 @@
       :host {
         display: block;
       }
-      .message{
-        width: 50%;
-      }
+
     </style>
+
+      <style is="custom-style">
+
+      .message-container{
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+      .message{
+        box-sizing: border-box;
+
+        max-width: 80%;
+        background-color: #eee;
+        padding: 5pt;
+        border-radius: 5px;
+        margin: 5pt;
+        float: left;
+        clear: both;
+        word-wrap: break-word;
+      }
+      .self{
+        float: right;
+        background-color: #555599;
+        color: #FCFCFC;
+      }
+      .date{
+        font-size: 6pt;
+      }
+      </style>
 
 
     <paper-toolbar>
       <span class="title">[[title]]</span>
     </paper-toolbar>
 
-<iron-list items="[[_messages]]" as="message">
-  <div>[[message.message]]</div>
-</iron-list>
-
-<template is="dom-repeat" items="{{_messages}}">
-  <div class="message {{item.self}}"><span class="date">{{item.date}}</span>{{item.message}}</div>
+<div class="message-container">
+<template is="dom-repeat" items="{{messages}}">
+  <template is="dom-if" if="{{item.self}}">
+    <div class="message self">{{item.message}}</div>
+  </template>
+  <template is="dom-if" if="{{!item.self}}">
+    <div class="message">{{item.message}}</div>
+  </template>
 </template>
-<div></div>
+</div>
 
 <iron-form id="presubmit">
-  <paper-input id="input" keys="enter" on-keys-pressed="_submit" value="{{messageInput}}"></paper-input>
-  <paper-icon-button on-tap="_submit" icon="send"></paper-icon-button>
+  <paper-input id="input" keys="enter" on-keys-pressed="addMessage('self')" value="{{messageInput}}"></paper-input>
+  <paper-icon-button on-tap="addMessage('self')" icon="send"></paper-icon-button>
 </iron-form>
 
   </template>
@@ -55,11 +83,20 @@
         },
         title:{
           type: String,
-          value: 'Chat',
+          value: 'WoChat',
         },
-        _messages: {
+        /*Messages have the following structure.
+
+        {
+          message: "",
+             date:"",
+           sender:"",
+       }
+
+        */
+        messages: {
           type: Array,
-          value: [{message: "Hej på dig!", sent:"", sender:"", }]
+          value: []
         },
         messageInput:{
           type: String,
@@ -68,21 +105,30 @@
           type: String
         }
       },
-      _submit: function(event){
-        var input = this.get("messageInput");
+      /*
+        message param Has same structure as an object in messages.
+      */
+      addMessage: function(message){
+        this.push('messages', message);
 
-        this.push('_messages',{message: input, date: new Date(), sender: this.currentUser, self: true});
+        console.log(this.messages);
+      },
+      _submit: function(){
+
+        var input = this.get("messageInput");
+        if(input.length>0)
+          this.addMessage({message: input, date: new Date(), sender: this.currentUser, self: true});
 
         this.set('messageInput', "");
-        console.log(this._messages);
       },
       ready: function(){
         this.$$('paper-toolbar').customStyle['--paper-toolbar-background'] = this.color;
 
         this.addEventListener('iron-form-submit', function(event){
-          this._messages.push({message: event.detail, sent: new Date()});
+          this.messages.push({message: event.detail, sent: new Date()});
         });
       },
+
 
 
     });
