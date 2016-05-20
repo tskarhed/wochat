@@ -1,0 +1,90 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-form/iron-form.html">
+<link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+
+<dom-module id="wochat-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .message{
+        width: 50%;
+      }
+    </style>
+
+
+    <paper-toolbar>
+      <span class="title">[[title]]</span>
+    </paper-toolbar>
+
+<iron-list items="[[_messages]]" as="message">
+  <div>[[message.message]]</div>
+</iron-list>
+
+<template is="dom-repeat" items="{{_messages}}">
+  <div class="message {{item.self}}"><span class="date">{{item.date}}</span>{{item.message}}</div>
+</template>
+<div></div>
+
+<iron-form id="presubmit">
+  <paper-input id="input" keys="enter" on-keys-pressed="_submit" value="{{messageInput}}"></paper-input>
+  <paper-icon-button on-tap="_submit" icon="send"></paper-icon-button>
+</iron-form>
+
+  </template>
+
+  <script>
+
+
+
+    Polymer({
+
+      is: 'wochat-element',
+      behaviors: [Polymer.IronA11yKeysBehavior],
+      keyBindings: {
+        'enter' : '_submit'
+      },
+      properties: {
+        color: {
+          type: String,
+          value: "#F79321",
+        },
+        title:{
+          type: String,
+          value: 'Chat',
+        },
+        _messages: {
+          type: Array,
+          value: [{message: "Hej på dig!", sent:"", sender:"", }]
+        },
+        messageInput:{
+          type: String,
+        },
+        currentUser:{
+          type: String
+        }
+      },
+      _submit: function(event){
+        var input = this.get("messageInput");
+
+        this.push('_messages',{message: input, date: new Date(), sender: this.currentUser, self: true});
+
+        this.set('messageInput', "");
+        console.log(this._messages);
+      },
+      ready: function(){
+        this.$$('paper-toolbar').customStyle['--paper-toolbar-background'] = this.color;
+
+        this.addEventListener('iron-form-submit', function(event){
+          this._messages.push({message: event.detail, sent: new Date()});
+        });
+      },
+
+
+    });
+  </script>
+</dom-module>
