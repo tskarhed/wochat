@@ -158,7 +158,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>:host{display:block;}</style>
 
-      <style is="custom-style">.message-container{overflow:hidden;box-sizing:border-box;}.message{box-sizing:border-box;max-width:80%;background-color:#eee;padding:5pt;border-radius:5px;margin:5pt;float:left;clear:both;word-wrap:break-word;}.self{float:right;background-color:#555599;color:#FCFCFC;}.date{font-size:6pt;}</style>
+      <style is="custom-style">.message-container{overflow:hidden;box-sizing:border-box;}.message{box-sizing:border-box;max-width:80%;background-color:#eee;padding:5pt;border-radius:5px;margin:5pt;float:left;clear:both;word-wrap:break-word;}.self{float:right;background-color:#555599;color:#FCFCFC;}.date{font-size:6pt;}iron-form{display:flex;}paper-input{flex-grow:1;}paper-icon-button{align-self:center;}</style>
 
 
     <paper-toolbar>
@@ -175,7 +175,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 </template>
 </div>
-
+<iron-form id="presubmit">
+  <paper-input id="input" keys="enter" on-keys-pressed="addMessage('self')" value="{{messageInput}}"></paper-input>
+  <paper-icon-button id="inputButton" icon="send"></paper-icon-button>
+</iron-form>
 
 
   </template>
