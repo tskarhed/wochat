@@ -40,6 +40,15 @@
       .date{
         font-size: 6pt;
       }
+      iron-form{
+        display: flex;
+      }
+      paper-input{
+        flex-grow: 1;
+      }
+      paper-icon-button{
+        align-self: center;
+      }
       </style>
 
 
@@ -57,7 +66,10 @@
   </template>
 </template>
 </div>
-
+<iron-form id="presubmit">
+  <paper-input id="input" keys="enter" on-keys-pressed="addMessage('self')" value="{{messageInput}}"></paper-input>
+  <paper-icon-button id="inputButton" icon="send"></paper-icon-button>
+</iron-form>
 
 
   </template>
@@ -72,6 +84,9 @@
       behaviors: [Polymer.IronA11yKeysBehavior],
       keyBindings: {
         'enter' : '_submit'
+      },
+      listeners: {
+        'inputButton.tap' : '_submit'
       },
       properties: {
         color: {
@@ -107,8 +122,6 @@
       */
       addMessage: function(message){
         this.push('messages', message);
-
-        console.log(this.messages);
       },
       _submit: function(){
 
@@ -120,7 +133,6 @@
       },
       ready: function(){
         this.$$('paper-toolbar').customStyle['--paper-toolbar-background'] = this.color;
-
         this.addEventListener('iron-form-submit', function(event){
           this.messages.push({message: event.detail, sent: new Date()});
         });
