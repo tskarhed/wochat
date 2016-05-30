@@ -1,0 +1,36 @@
+<html><head><link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-form/iron-form.html">
+<link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+
+</head><body><dom-module id="wochat-element">
+  <template>
+    <style>:host{display:block;}</style>
+
+      <style is="custom-style">.message-container{overflow:hidden;box-sizing:border-box;}.message{box-sizing:border-box;max-width:80%;background-color:#eee;padding:5pt;border-radius:5px;margin:5pt;float:left;clear:both;word-wrap:break-word;}.self{float:right;background-color:#555599;color:#FCFCFC;}.date{font-size:6pt;}</style>
+
+
+    <paper-toolbar>
+      <span class="title">[[title]]</span>
+    </paper-toolbar>
+
+<div class="message-container">
+<template is="dom-repeat" items="{{messages}}">
+  <template is="dom-if" if="{{item.self}}">
+    <div class="message self">{{item.message}}</div>
+  </template>
+  <template is="dom-if" if="{{!item.self}}">
+    <div class="message">{{item.message}}</div>
+  </template>
+</template>
+</div>
+
+
+
+  </template>
+
+  <script src="wochat-element.html_script_0.js"></script>
+</dom-module>
+</body></html>
