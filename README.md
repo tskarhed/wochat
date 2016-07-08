@@ -2,6 +2,8 @@
 
 Wopify chat element. Chat on!
 
+HAS NOT BEEN TESTED IN PRODUCTION. USE AT YOUR OWN RISK.
+
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
